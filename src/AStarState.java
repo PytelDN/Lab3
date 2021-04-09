@@ -65,9 +65,13 @@ public class AStarState
      **/
     public boolean addOpenWaypoint(Waypoint newWP)
     {
-
-        if (open.get(newWP.getLocation())==null || newWP.getPreviousCost() <= getMinOpenWaypoint().getTotalCost()){
-            open.put(newWP.getLocation(),newWP);
+        if(!open.containsKey(newWP.getLocation())){
+            open.put(newWP.getLocation(), newWP);
+            return true;
+        }
+        Waypoint tempWP = open.get(newWP.getLocation());
+        if (newWP.getPreviousCost() < tempWP.getPreviousCost()){
+            open.put(newWP.getLocation(), newWP);
             return true;
         }
         return false;
@@ -98,10 +102,7 @@ public class AStarState
      **/
     public boolean isLocationClosed(Location loc)
     {
-        for(Location location : close.keySet()){
-            if(loc.equals(location)) return true;
-        }
-        return false;
+        return close.containsKey(loc);
     }
 }
 
